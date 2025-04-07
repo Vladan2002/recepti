@@ -1,0 +1,18 @@
+<div class="main__recipe">
+    <div class="main__recipe__instructions">
+        <h3 class="main__recipe__title">INSTRUCTIONS</h3>
+
+        {{#foreach recipe}}
+        <div class="main__recipe__step-container">
+            <p class="main__recipe__step-number">{{step}}</p>
+            <p class="main__recipe__step-text">{{instruction}}</p>
+        </div>
+        {{/foreach}}
+    </div>
+
+
+
+    <div class="main__recipe__image-container">
+        <img src="{{picture}}" alt="Finished dish" class="main__recipe__image">
+    </div>
+</div>
