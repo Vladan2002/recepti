@@ -2,12 +2,12 @@
     <div class="main__recipe__instructions">
         <h3 class="main__recipe__title">INSTRUCTIONS</h3>
 
-        {{#foreach recipe}}
+        {{#each recipe}}
         <div class="main__recipe__step-container">
             <p class="main__recipe__step-number">{{step}}</p>
             <p class="main__recipe__step-text">{{instruction}}</p>
         </div>
-        {{/foreach}}
+        {{/each}}
     </div>
 
 

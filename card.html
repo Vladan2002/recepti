@@ -8,74 +8,27 @@
 </head>
 <body>
 <nav class="navbar">
-    <a href="" class="navbar__link">Home</a>
+    <a href="http://127.0.0.1:8080/" class="navbar__link">Home</a>
     <a href="" class="navbar__link">About</a>
 </nav>
 
 <div class="main">
-    <div class="main__header">
-        <h1 class="main__header__title">Low-Carb Avocado Chicken Salad</h1>
-
-        <div class="main__header__facts">
-            <div class="main__fact">
-                <h3 class="main__fact__value">249</h3>
-                <p class="main__fact__label">calories</p>
-            </div>
-
-            <div class="main__fact">
-                <h3 class="main__fact__value">13</h3>
-                <p class="main__fact__label">carbs</p>
-            </div>
-
-            <div class="main__fact">
-                <h3 class="main__fact__value">8</h3>
-                <p class="main__fact__label">fats</p>
-            </div>
-
-            <div class="main__fact">
-                <h3 class="main__fact__value">29</h3>
-                <p class="main__fact__label">proteins</p>
-            </div>
-
-            <div class="main__fact">
-                <h3 class="main__fact__value">8</h3>
-                <p class="main__fact__label">sugar</p>
-            </div>
-        </div>
+    <div id="loader" class="loader">
+        <img src="loader-for-recipes.gif" alt="">
     </div>
 
-
-    <div class="main__recipe">
-        <div class="main__recipe__instructions">
-            <h3 class="main__recipe__title">INSTRUCTIONS</h3>
-            <div class="main__recipe__step-container">
-                <p class="main__recipe__step-number">1</p>
-                <p class="main__recipe__step-text">In a blender or food processor, combine the yogurt, lime juice, pepper, and chili powder and pulse to combine. Add ½ of the avocado and blend until creamy.</p>
-            </div>
-
-            <div class="main__recipe__step-container">
-                <p class="main__recipe__step-number">2</p>
-                <p class="main__recipe__step-text">In a medium bowl, combine the chicken, yogurt sauce, celery, the remaining ½ avocado, onion, and salt. Mix until well combined.</p>
-            </div>
-
-            <div class="main__recipe__step-container">
-                <p class="main__recipe__step-number">3</p>
-                <p class="main__recipe__step-text">Serve on low-carb bread and garnish with cilantro, or as desired.</p>
-            </div>
-
-            <div class="main__recipe__step-container">
-                <p class="main__recipe__step-number">4</p>
-                <p class="main__recipe__step-text">Enjoy!</p>
-            </div>
-        </div>
-
-
-
-        <div class="main__recipe__image-container">
-            <img src="hilti.jpg" alt="Finished dish" class="main__recipe__image">
-        </div>
-    </div>
+    <div id="specs"></div>
+    <div id="recipe"></div>
 
 </div>
 </body>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.8/handlebars.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.8/axios.min.js"></script>
+
+<script src="scripts/card.js"></script>
+
+
 </html>
