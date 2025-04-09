@@ -7,9 +7,6 @@ var empty=document.getElementById('empty');
 empty.style.display="none";
 
 
-
-
-
 async function fetchData() {
 
     loader(true);
@@ -24,7 +21,7 @@ async function fetchData() {
     }
     const request = {
         method: "GET",
-        url: "https://tasty.p.rapidapi.com/recipes/list",
+        url: "https://tasty.p.rapidapi.com/recipe/list", //dodaj s
             params: params
         ,
         headers: {
@@ -44,7 +41,7 @@ async function fetchData() {
         document.getElementById("content").innerHTML ="";
 
         const response = await axios.request(request);
-        if(!response || response.data.results.length == 0) {
+        if(!response || response.data.results.length == 0 || !response.data) {
             loader(false);
             empty.style.display="flex";
             return;
@@ -71,8 +68,9 @@ async function fetchData() {
 
     } catch (err) {
         console.error("Error fetching data:", err);
-        document.getElementById("content").innerHTML = "<p>Failed to load recipes.</p>";
-    }
+        document.getElementById("content").innerHTML ="";
+        loader(false);
+        empty.style.display="flex";    }
 }
 
 

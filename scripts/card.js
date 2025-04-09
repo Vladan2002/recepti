@@ -1,6 +1,15 @@
 var urlParams = new URLSearchParams(window.location.search);
 var id = urlParams.get('id');
 
+var empty=document.getElementById('empty');
+empty.style.display="none";
+
+
+document.addEventListener('DOMContentLoaded', function(){
+    loadElements()
+    fetchCard();
+})
+
 async function fetchCard() {
     var urlParams = new URLSearchParams(window.location.search);
     var id = urlParams.get('id');
@@ -14,7 +23,7 @@ async function fetchCard() {
 
     const options = {
         method: 'GET',
-        url: 'https://tasty.p.rapidapi.com/recipes/get-more-info',
+        url: 'https://tasty.p.rapidapi.com/recipeas/get-more-info', //makni a
         params: { id: id },
         headers: {
             'x-rapidapi-key': '95da5eb655msh9dc84ffae7afa48p1b51b9jsn1986d4b5c662',
@@ -30,6 +39,11 @@ async function fetchCard() {
         var specsTemplate = Handlebars.compile(specsResponse.data);
 
         var response = await axios.request(options);
+        if(!response || !response.data){
+            loader(false);
+            empty.style.display="flex";
+            return;
+        }
         var data = response.data;
 
         var specsData = {
@@ -56,7 +70,10 @@ async function fetchCard() {
 
     } catch (err) {
         console.error("Error fetching recipe details:", err);
-        document.getElementById("recipe").innerHTML = "<p>Failed to load recipe details.</p>";
+        document.getElementById("specs").innerHTML ="";
+        document.getElementById("recipe").innerHTML = "";
+        loader(false);
+        empty.style.display="flex";
     }
 }
 
@@ -70,10 +87,7 @@ function loader(boolean) {
 
 }
 
-document.addEventListener('DOMContentLoaded', function(){
-    loadElements()
-    fetchCard();
-})
+
 
 
 async function loadElements() {
