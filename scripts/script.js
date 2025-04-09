@@ -3,6 +3,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     await loadElements();
     await fetchData()
 })
+var empty=document.getElementById('empty');
+empty.style.display="none";
 
 
 
@@ -11,7 +13,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 async function fetchData() {
 
     loader(true);
-    q=document.getElementById('search').value
+    var q=document.getElementById('search').value
     const params = {
         from: '0',
         size: '20'
@@ -37,10 +39,21 @@ async function fetchData() {
 
         const template = Handlebars.compile(partialText);
 
+
+
+        document.getElementById("content").innerHTML ="";
+
         const response = await axios.request(request);
+        if(!response || response.data.results.length == 0) {
+            loader(false);
+            empty.style.display="flex";
+            return;
+        }
+        empty.style.display="none";
         const results = response.data.results;
 
         let cardsHTML = "";
+
 
         for (let i = 0; i < results.length; i++) {
             const cardData = {
@@ -99,5 +112,10 @@ async function loadElements() {
 
     }
 }
+
+
+
+
+
 
 

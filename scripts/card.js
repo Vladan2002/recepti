@@ -71,5 +71,21 @@ function loader(boolean) {
 }
 
 document.addEventListener('DOMContentLoaded', function(){
+    loadElements()
     fetchCard();
 })
+
+
+async function loadElements() {
+    try {
+        var navbarResponse = await axios.get('/view/partials/navbar.hbs');
+
+        var navbarTemplate = Handlebars.compile(navbarResponse.data);
+
+        document.getElementById('navbar').innerHTML = navbarTemplate();
+
+
+    } catch (e) {
+
+    }
+}
