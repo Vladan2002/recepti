@@ -1,11 +1,12 @@
 
-document.addEventListener('DOMContentLoaded', async () => {
-    await loadElements();
-    await fetchData()
-})
 var empty=document.getElementById('empty');
 empty.style.display="none";
 
+
+document.addEventListener('DOMContentLoaded', async () => {
+    await loadElements(true);
+    await fetchData()
+})
 
 async function fetchData() {
 
@@ -21,7 +22,7 @@ async function fetchData() {
     }
     const request = {
         method: "GET",
-        url: "https://tasty.p.rapidapi.com/recipe/list", //dodaj s
+        url: "https://tasty.p.rapidapi.com/recipes/list", //dodaj s
             params: params
         ,
         headers: {
@@ -41,12 +42,8 @@ async function fetchData() {
         document.getElementById("content").innerHTML ="";
 
         const response = await axios.request(request);
-        if(!response || response.data.results.length == 0 || !response.data) {
-            loader(false);
-            empty.style.display="flex";
-            return;
-        }
-        empty.style.display="none";
+        if(!badResponse(false,false,response)){return;}
+
         const results = response.data.results;
 
         let cardsHTML = "";
@@ -68,48 +65,20 @@ async function fetchData() {
 
     } catch (err) {
         console.error("Error fetching data:", err);
-        document.getElementById("content").innerHTML ="";
-        loader(false);
-        empty.style.display="flex";    }
+        badResponse(false, true);
+    }
 }
 
 
 
 
 function card(id) {
-
         window.location.href = `http://127.0.0.1:8080/card.html?id=${id}`;
-
-
 }
 
-function loader(boolean) {
-
-    if (boolean) {
-        document.getElementById('loader').style.display = 'flex';
-    }else{
-        document.getElementById('loader').style.display = 'none';
-    }
-
-}
-
-async function loadElements() {
-    try {
-        var headerResponse = await axios.get('/view/partials/index-header.hbs');
-       var navbarResponse = await axios.get('/view/partials/navbar.hbs');
-
-        var headerTemplate = Handlebars.compile(headerResponse.data);
-        var navbarTemplate = Handlebars.compile(navbarResponse.data);
-        console.log(headerTemplate);
-
-        document.getElementById('navbar').innerHTML = navbarTemplate();
-        document.getElementById('container').innerHTML = headerTemplate();
 
 
-    } catch (e) {
 
-    }
-}
 
 
 

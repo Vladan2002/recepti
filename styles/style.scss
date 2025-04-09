@@ -146,8 +146,8 @@ body{
     }
 
     &__facts {
+      width: 100%;
       display: flex;
-      flex-wrap: wrap;
       gap: 20px;
     }
   }
@@ -155,11 +155,12 @@ body{
   &__fact {
     display: flex;
     align-items: center;
-    width: 100px;
 
     &__icon {
       font-size: 1.5em;
       margin-bottom: 5px;
+      color: #384d44;
+
     }
 
     &__value {
@@ -248,6 +249,10 @@ width: 100%;
   border-radius: 15px;
 }
 
+
+.fa-solid{
+  margin-right: 10px;
+}
 
 
 

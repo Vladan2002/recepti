@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Document</title>
     <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
 <div id="navbar"></div>
@@ -14,7 +15,7 @@
     <div id="loader" class="loader">
         <img src="loader-for-recipes.gif" alt="">
     </div>
-    <div class="no-items" id="empty">There is no recipe at the moment</div>
+    <div class="no-items" id="empty"></div>
     <div id="specs"></div>
     <div id="recipe"></div>
 
@@ -26,7 +27,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.8/handlebars.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.8/axios.min.js"></script>
 
+<script src="scripts/mutual.js"></script>
 <script src="scripts/card.js"></script>
+
+<script type="text/x-handlebars-template" id="error-template">
+    <p>{{text}}</p>
+</script>
 
 
 </html>
