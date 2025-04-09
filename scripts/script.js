@@ -1,6 +1,5 @@
 
-var empty=document.getElementById('empty');
-empty.style.display="none";
+
 
 
 document.addEventListener('DOMContentLoaded', async () => {
