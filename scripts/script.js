@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 async function fetchData() {
     turnLoader(true);
+    document.getElementById('content').innerHTML = '';
     const searchTerm = document.getElementById('search').value;
     const params = {
         from: '0',
@@ -20,8 +21,11 @@ async function fetchData() {
         const templateSource = document.getElementById("item-template").innerHTML;
         const template = Handlebars.compile(templateSource);
         const response = await axios.request(request);
-        if (!badResponse(false, false, response)) return;
+        if (!checkResponse(response, "There are no recipes", false)) return;
         const rawResults = response.data.results;
+        if (!response.data || !Array.isArray(response.data.results) || response.data.results.length == 0) {
+            emptyHTML(false, "No results found.");
+        }
         const preparedResults = [];
         for (let i = 0; i < rawResults.length; i++) {
             const r = rawResults[i];
@@ -39,7 +43,7 @@ async function fetchData() {
         document.getElementById("content").innerHTML = html;
     } catch (err) {
         console.error("Error fetching data:", err);
-        badResponse(false, true);
+        handleErrorStatus(err)
     }
 }
 

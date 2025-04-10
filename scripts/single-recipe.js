@@ -16,7 +16,7 @@ async function fetchCard() {
         var recipeTemplate = Handlebars.compile(recipeResponse.data);
         var specsTemplate = Handlebars.compile(specsResponse.data);
         var response = await axios.request(options);
-        if(!badResponse(true,false,response)){return;}
+        if(!checkResponse(response,"There is no data for this recipe",true)){return;}
         var data = response.data;
         var specsData = {
             title: data.name,
@@ -26,7 +26,7 @@ async function fetchCard() {
             protein: data.nutrition?.protein ,
             sugar: data.nutrition?.sugar
         };
-        let recipeSteps = [];
+        let recipeSteps = [{step:0,instruction:"There are no instructions for this recipe"}];
         if (Array.isArray(data.instructions)) {
             recipeSteps = data.instructions.map((instr, index) => ({
                 step: index + 1,
@@ -34,7 +34,7 @@ async function fetchCard() {
             }));
         }
         const recipeData = {
-            picture: data.thumbnail_url,
+            picture: data.thumbnail_url ? data.thumbnail_url : 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/2048px-No_image_available.svg.png',
             recipe: recipeSteps
         };
         turnLoader(false)
@@ -42,9 +42,20 @@ async function fetchCard() {
         document.getElementById("recipe").innerHTML = recipeTemplate(recipeData);
     } catch (err) {
         console.error("Error fetching recipe details:", err);
-        if(!badResponse(true,true)){return;}
+        handleErrorStatus(err)
     }
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 

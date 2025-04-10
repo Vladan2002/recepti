@@ -18,38 +18,19 @@ function isEmptyId(card = false) {
     return true;
 }
 
-function badResponse(card = false, crash = false, response) {
-    if (crash) {
-        if (card) {
-            emptyHTML(true, "Server is not responding")
-            console.log("crashed");
-            return false;
-        } else {
-            emptyHTML(false, "Server is not responding for all recipes")
-            console.log("crashed");
-            return false;
-        }
-    }
-    if (card) {
+function checkResponse(response, message,page=false) {
         if (!response || !response.data) {
-            emptyHTML(true, "There is no instructions for this recipe")
+            emptyHTML(page, message);
             console.log("no crashed");
             return false;
         }
-    } else {
-        if (!response || !response.data || !response.data.results || response.data.results.length == 0) {
-            emptyHTML(false, "No results");
-            console.log("no crashed");
-            return false;
-        }
-    }
     empty.style.display = 'none';
     return true;
 }
 
 
 function emptyHTML(boolean, message) {
-    loader(false);
+    turnLoader(false);
     if (boolean) {
         document.getElementById("specs").innerHTML = "";
         document.getElementById("recipe").innerHTML = "";
@@ -99,4 +80,35 @@ function buildTastyRequest(endpoint, params = {}) {
             'x-rapidapi-host': 'tasty.p.rapidapi.com'
         }
     };
+}
+
+function handleErrorStatus(error) {
+    let message = '';
+    let status = error.response?.status;
+
+    switch(status) {
+        case 400:
+            message = 'Bad request. Please check the input data.';
+            break;
+        case 401:
+            message = 'Unauthorized. Please log in.';
+            break;
+        case 403:
+            message = 'Access forbidden.';
+            break;
+        case 404:
+            message = 'Recipe not found.';
+            break;
+        case 500:
+            message = 'Server error. Please try again later.';
+            break;
+        case 503:
+            message = 'Service is currently unavailable.';
+            break;
+        default:
+            message = 'An error occurred. Please try again.';
+    }
+
+    turnLoader(false);
+    showErrorMessage(message);
 }
