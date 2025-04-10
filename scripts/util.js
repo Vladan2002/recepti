@@ -1,0 +1,102 @@
+var empty = document.getElementById('empty');
+empty.style.display = "none";
+
+function showErrorMessage(message) {
+    const source = document.getElementById("error-template").innerHTML;
+    const template = Handlebars.compile(source);
+    const html = template({text: message});
+    empty.innerHTML = html;
+    empty.style.display = "flex";
+}
+
+function isEmptyId(card = false) {
+    if (card && !id) {
+        emptyHTML(true, "No id is provided")
+        return false;
+    }
+    empty.style.display = 'none';
+    return true;
+}
+
+function badResponse(card = false, crash = false, response) {
+    if (crash) {
+        if (card) {
+            emptyHTML(true, "Server is not responding")
+            console.log("crashed");
+            return false;
+        } else {
+            emptyHTML(false, "Server is not responding for all recipes")
+            console.log("crashed");
+            return false;
+        }
+    }
+    if (card) {
+        if (!response || !response.data) {
+            emptyHTML(true, "There is no instructions for this recipe")
+            console.log("no crashed");
+            return false;
+        }
+    } else {
+        if (!response || !response.data || !response.data.results || response.data.results.length == 0) {
+            emptyHTML(false, "No results");
+            console.log("no crashed");
+            return false;
+        }
+    }
+    empty.style.display = 'none';
+    return true;
+}
+
+
+function emptyHTML(boolean, message) {
+    loader(false);
+    if (boolean) {
+        document.getElementById("specs").innerHTML = "";
+        document.getElementById("recipe").innerHTML = "";
+    } else {
+        document.getElementById("content").innerHTML = "";
+    }
+    showErrorMessage(message);
+
+}
+
+function turnLoader(boolean) {
+    if (boolean) {
+        document.getElementById('loader').style.display = 'flex';
+    } else {
+        document.getElementById('loader').style.display = 'none';
+    }
+}
+
+async function loadElements(card = false) {
+    try {
+        var navbarResponse = await axios.get('/view/layout/navbar.hbs');
+        var navbarTemplate = Handlebars.compile(navbarResponse.data);
+        document.getElementById('navbar').innerHTML = navbarTemplate();
+        if (card) {
+            var headerResponse = await axios.get('/view/partials/index-header.hbs');
+            var headerTemplate = Handlebars.compile(headerResponse.data);
+            document.getElementById('container').innerHTML = headerTemplate();
+        }
+    } catch (e) {
+        console.error("Error loading elements:", e);
+        document.getElementById('navbar').innerHTML = 'Error loading navbar. Please try again later.';
+        if (card) {
+            document.getElementById('container').innerHTML = 'Error loading content. Please try again later.';
+        }
+    }
+}
+
+
+function buildTastyRequest(endpoint, params = {}) {
+    const baseUrl = "https://tasty.p.rapidapi.com/recipes/";
+    return {
+        method: "GET",
+        url: baseUrl + endpoint,
+        params: params,
+        headers: {
+            'x-rapidapi-key': '95da5eb655msh9dc84ffae7afa48p1b51b9jsn1986d4b5c662',
+            'x-rapidapi-host': 'tasty.p.rapidapi.com'
+        }
+    };
+}

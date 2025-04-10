@@ -1,87 +1,49 @@
-
-
-
-
 document.addEventListener('DOMContentLoaded', async () => {
     await loadElements(true);
     await fetchData()
 })
 
 async function fetchData() {
-
-    loader(true);
-    var q=document.getElementById('search').value
+    turnLoader(true);
+    const searchTerm = document.getElementById('search').value;
     const params = {
         from: '0',
         size: '20'
     };
-
-    if (q) {
-        params.q = q;
+    if (searchTerm) {
+        params.q = searchTerm;
     }
-    const request = {
-        method: "GET",
-        url: "https://tasty.p.rapidapi.com/recipes/list", //dodaj s
-            params: params
-        ,
-        headers: {
-            'x-rapidapi-key': '95da5eb655msh9dc84ffae7afa48p1b51b9jsn1986d4b5c662',
-            'x-rapidapi-host': 'tasty.p.rapidapi.com'
-        }
-    };
-
+    const request = buildTastyRequest("list", params);
     try {
         const partialResponse = await axios.get('/view/partials/card.hbs');
-        const partialText = partialResponse.data;
-
-        const template = Handlebars.compile(partialText);
-
-
-
-        document.getElementById("content").innerHTML ="";
-
+        Handlebars.registerPartial('card', partialResponse.data);
+        const templateSource = document.getElementById("item-template").innerHTML;
+        const template = Handlebars.compile(templateSource);
         const response = await axios.request(request);
-        if(!badResponse(false,false,response)){return;}
-
-        const results = response.data.results;
-
-        let cardsHTML = "";
-
-
-        for (let i = 0; i < results.length; i++) {
-            const cardData = {
-                id: results[i].id,
-                name: results[i].name,
-                picture: results[i].thumbnail_url,
-                tag: results[i].topics?.[0]?.name || "",
-                time: results[i].total_time_minutes ? `${results[i].total_time_minutes} min` : ""
-            };
-
-            cardsHTML += template(cardData);
+        if (!badResponse(false, false, response)) return;
+        const rawResults = response.data.results;
+        const preparedResults = [];
+        for (let i = 0; i < rawResults.length; i++) {
+            const r = rawResults[i];
+            preparedResults.push({
+                id: r.id,
+                name: r.name,
+                picture: r.thumbnail_url,
+                tag: r.topics && r.topics[0] ? r.topics[0].name : "",
+                time: r.total_time_minutes ? `${r.total_time_minutes} min` : ""
+            });
         }
-        loader(false);
-        document.getElementById("content").innerHTML = cardsHTML;
-
+        const data = { item: preparedResults };
+        const html = template(data);
+        turnLoader(false);
+        document.getElementById("content").innerHTML = html;
     } catch (err) {
         console.error("Error fetching data:", err);
         badResponse(false, true);
     }
 }
 
-
-
-
 function card(id) {
-        window.location.href = `http://127.0.0.1:8080/card.html?id=${id}`;
+        window.location.href = `../single-recipe.html?id=${id}`;
 }
-
-
-
-
-
-
-
-
-
-
 

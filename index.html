@@ -22,11 +22,17 @@
 
 
 
-<script src="scripts/mutual.js"></script>
+<script src="scripts/util.js"></script>
 <script src="scripts/script.js"></script>
 
 <script type="text/x-handlebars-template" id="error-template">
     <p>{{text}}</p>
+</script>
+
+<script type="text/x-handlebars-template" id="item-template">
+    {{#each item}}
+    {{>card}}
+    {{/each}}
 </script>
 
 </html>
